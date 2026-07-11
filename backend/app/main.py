@@ -1,13 +1,17 @@
 from fastapi import FastAPI
 from sqlalchemy import text
 
+from app.api.users import router as users_router
 from app.database.session import engine
+
 
 app = FastAPI(
     title="NovaFlick API",
     version="1.0.0",
     description="AI-powered movie recommendation backend."
 )
+
+app.include_router(users_router)
 
 
 @app.get("/")
@@ -25,11 +29,8 @@ def db_test():
     try:
         with engine.connect() as connection:
             connection.execute(text("SELECT 1"))
-        return {
-            "database": "Connected successfully ✅"
-        }
+
+        return {"database": "Connected successfully"}
+
     except Exception as e:
-        return {
-            "database": "Connection failed ❌",
-            "error": str(e)
-        }
+        return {"database": f"Connection failed: {str(e)}"}
