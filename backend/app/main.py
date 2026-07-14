@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from sqlalchemy import text
 
 from app.api.users import router as users_router
+from app.api.preferences import router as preferences_router
 from app.database.session import engine
 from app.api.movies import router as movies_router
 
@@ -35,3 +36,4 @@ def db_test():
         return {"database": f"Connection failed: {str(e)}"}
 app.include_router(users_router)
 app.include_router(movies_router)
+app.include_router(preferences_router)

@@ -20,13 +20,60 @@ class TMDBService:
             response.raise_for_status()
             return response.json()
 
-    async def get_trending_movies(self, time_window: str = "week"):
-        return await self._get(f"/trending/movie/{time_window}")
+    async def get_trending_movies(
+        self,
+        time_window: str = "week",
+        page: int = 1
+    ):
+        return await self._get(
+            f"/trending/movie/{time_window}",
+            params={"page": page}
+        )
 
-    async def get_popular_movies(self):
-        return await self._get("/movie/popular")
+    async def get_popular_movies(self, page: int = 1):
+        return await self._get(
+            "/movie/popular",
+            params={"page": page}
+        )
+
+    async def search_movies(self, query: str, page: int = 1):
+        return await self._get(
+            "/search/movie",
+            params={
+                "query": query,
+                "page": page
+            }
+        )
+
+    async def get_top_rated_movies(self, page: int = 1):
+        return await self._get(
+            "/movie/top_rated",
+            params={"page": page}
+        )
+
+    async def get_upcoming_movies(self, page: int = 1):
+        return await self._get(
+            "/movie/upcoming",
+            params={"page": page}
+        )
+    async def get_movie_genres(self):
+        return await self._get("/genre/movie/list")
+    async def discover_movies(
+    self,
+    genre_id: int,
+    page: int = 1
+):
+        return await self._get(
+        "/discover/movie",
+        params={
+            "with_genres": genre_id,
+            "page": page
+        }
+    )
+
     async def get_movie_details(self, movie_id: int):
         return await self._get(f"/movie/{movie_id}")
+    
 
 
 tmdb_service = TMDBService()

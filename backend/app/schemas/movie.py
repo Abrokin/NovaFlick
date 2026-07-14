@@ -1,6 +1,15 @@
 from pydantic import BaseModel
 
 
+class Genre(BaseModel):
+    id: int
+    name: str
+
+
+class GenreListResponse(BaseModel):
+    genres: list[Genre]
+
+
 class Movie(BaseModel):
     id: int
     title: str
@@ -18,8 +27,9 @@ class MovieListResponse(BaseModel):
     total_results: int
     results: list[Movie]
 
+
 class MovieDetail(Movie):
     runtime: int | None = None
-    genres: list[dict] = []
+    genres: list[Genre] = []
     status: str | None = None
     tagline: str | None = None
