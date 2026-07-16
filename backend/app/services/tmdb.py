@@ -87,6 +87,17 @@ class TMDBService:
             "vote_count.gte": 100
         }
     )
+    async def get_similar_movies(
+    self,
+    movie_id: int,
+    page: int = 1,
+):
+        return await self._get(
+        f"/movie/{movie_id}/similar",
+        params={
+            "page": page,
+        },
+    )
 
 
 tmdb_service = TMDBService()

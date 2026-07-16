@@ -8,6 +8,8 @@ from app.services.tmdb import tmdb_service
 from app.models.preference import UserGenrePreference
 from app.api.dependencies import get_current_user
 from app.models.user import User
+from app.models.favorite import Favorite
+from app.services.recommendation import recommendation_service
 
 
 router = APIRouter(
@@ -69,28 +71,11 @@ async def get_recommendations(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    preferences = (
-        db.query(UserGenrePreference)
-        .filter(UserGenrePreference.user_id == current_user.id)
-        .all()
+    return await recommendation_service.get_recommendations(
+        user_id=current_user.id,
+        db=db,
+        page=page,
     )
-
-    genre_ids = [preference.genre_id for preference in preferences]
-
-    if not genre_ids:
-        return MovieListResponse(
-            page=1,
-            results=[],
-            total_pages=0,
-            total_results=0,
-        )
-
-    data = await tmdb_service.get_recommendations(
-    genres=genre_ids,
-    page=page,
-)
-
-    return data
 
 
 @router.get("/{movie_id}", response_model=MovieDetail)
