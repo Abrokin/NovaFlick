@@ -1,7 +1,13 @@
 from fastapi import APIRouter, Query
+from sqlalchemy.orm import Session
+from fastapi import Depends
 
+from app.database.session import get_db
 from app.schemas.movie import GenreListResponse, MovieDetail, MovieListResponse
 from app.services.tmdb import tmdb_service
+from app.models.preference import UserGenrePreference
+from app.api.dependencies import get_current_user
+from app.models.user import User
 
 
 router = APIRouter(
@@ -54,6 +60,37 @@ async def discover_movies(
     page: int = Query(1, ge=1)
 ):
     return await tmdb_service.discover_movies(genre_id, page)
+@router.get(
+    "/recommendations",
+    response_model=MovieListResponse
+)
+async def get_recommendations(
+    page: int = Query(1, ge=1),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    preferences = (
+        db.query(UserGenrePreference)
+        .filter(UserGenrePreference.user_id == current_user.id)
+        .all()
+    )
+
+    genre_ids = [preference.genre_id for preference in preferences]
+
+    if not genre_ids:
+        return MovieListResponse(
+            page=1,
+            results=[],
+            total_pages=0,
+            total_results=0,
+        )
+
+    data = await tmdb_service.get_recommendations(
+    genres=genre_ids,
+    page=page,
+)
+
+    return data
 
 
 @router.get("/{movie_id}", response_model=MovieDetail)

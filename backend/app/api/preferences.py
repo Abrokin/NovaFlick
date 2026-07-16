@@ -9,6 +9,7 @@ from app.schemas.preference import (
     GenrePreferenceCreate,
     GenrePreferenceResponse,
 )
+from sqlalchemy import select
 
 
 router = APIRouter(
@@ -37,6 +38,20 @@ def update_genre_preferences(
 
     db.add_all(preferences)
     db.commit()
+
+    return {
+        "genre_ids": [preference.genre_id for preference in preferences]
+    }
+@router.get("/genres", response_model=GenrePreferenceResponse)
+def get_genre_preferences(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    preferences = (
+        db.query(UserGenrePreference)
+        .filter(UserGenrePreference.user_id == current_user.id)
+        .all()
+    )
 
     return {
         "genre_ids": [preference.genre_id for preference in preferences]

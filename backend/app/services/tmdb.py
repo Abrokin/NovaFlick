@@ -73,7 +73,20 @@ class TMDBService:
 
     async def get_movie_details(self, movie_id: int):
         return await self._get(f"/movie/{movie_id}")
-    
+    async def get_recommendations(
+    self,
+    genres: list[int],
+    page: int = 1
+):
+        return await self._get(
+        "/discover/movie",
+        params={
+            "with_genres": ",".join(map(str, genres)),
+            "sort_by": "popularity.desc",
+            "page": page,
+            "vote_count.gte": 100
+        }
+    )
 
 
 tmdb_service = TMDBService()
