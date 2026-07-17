@@ -14,19 +14,18 @@ class RecommendationService:
         db: Session,
         page: int = 1,
     ):
-        favorites = (
-            db.query(Favorite)
-            .filter(Favorite.user_id == user_id)
-            .all()
-        )
+        favorite = (
+        db.query(Favorite)
+        .filter(Favorite.user_id == user_id)
+        .order_by(Favorite.id.desc())
+        .first()
+)
 
-        if favorites:
-            movie_id = favorites[0].movie_id
-
+        if favorite:
             return await tmdb_service.get_similar_movies(
-                movie_id=movie_id,
-                page=page,
-            )
+            movie_id=favorite.movie_id,
+            page=page,
+        )
 
         preferences = (
             db.query(UserGenrePreference)
