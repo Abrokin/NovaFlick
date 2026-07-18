@@ -8,6 +8,7 @@ from app.api.movies import router as movies_router
 from app.api.favorites import router as favorites_router
 from app.api.watchlist import router as watchlist_router
 from app.api.recommendations import router as recommendations_router
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
@@ -16,6 +17,17 @@ app = FastAPI(
     title="NovaFlick API",
     version="1.0.0",
     description="AI-powered movie recommendation backend."
+)
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
