@@ -48,9 +48,9 @@ export default function Home() {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
-      <Hero />
+      <Hero featuredMovie={movies[0]} />
 
-      <section className="max-w-7xl mx-auto px-6 py-10">
+      <section className="max-w-7xl mx-auto px-6 pt-32 pb-10">
         <h2 className="text-white text-4xl font-bold mb-8">
           🔥 Trending Movies
         </h2>
