@@ -9,7 +9,7 @@ export default function Navbar() {
       : "text-gray-300 hover:bg-[#1A112A] hover:text-white"
   }`;
   return (
-    <nav className="sticky top-0 z-50 flex justify-center py-4 px-4">
+    <nav className="sticky top-0 z-50 flex justify-center px-4">
   <div className="w-full">
 
         <div className="bg-[#0B0A14]/75 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-purple-900/20 px-8 py-5">
