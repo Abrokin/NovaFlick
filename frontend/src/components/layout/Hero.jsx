@@ -13,8 +13,8 @@ export default function Hero({ featuredMovie }) {
         <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-fuchsia-600/10 blur-[160px]" />
       </div>
 
-      <div className="relative z-6 mx-auto flex min-h-[78vh] max-w-[1450px] items-center px-8 py-12 lg:px-12 xl:px-16">
-        <div className="grid w-full items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <div className="relative z-10 mx-auto max-w-[1450px] px-8 pt-6 pb-16 lg:px-12 xl:px-16">
+        <div className="grid w-full items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
           {/* Left Side */}
           <motion.div
           
