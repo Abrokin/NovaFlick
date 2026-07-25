@@ -50,20 +50,37 @@ export default function Home() {
     <div className="bg-zinc-950 min-h-screen">
       <Hero featuredMovie={movies[0]} />
 
-      <section className="max-w-7xl mx-auto px-6 pt-32 pb-10">
-        <h2 className="text-white text-4xl font-bold mb-8">
-          🔥 Trending Movies
-        </h2>
+      <section className="max-w-7xl mx-auto px-6 pt-24 pb-16">
+  <div className="mb-12 flex items-end justify-between">
+    <div>
+      <span className="inline-flex items-center rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1 text-sm text-purple-300">
+        🔥 Trending
+      </span>
 
-        <MovieGrid>
-          {movies.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-            />
-          ))}
-        </MovieGrid>
-      </section>
+      <h2 className="mt-4 text-5xl font-black text-white">
+        Trending This Week
+      </h2>
+
+      <p className="mt-3 max-w-2xl text-lg text-gray-400">
+        Explore the movies everyone is talking about right now, updated
+        weekly from global trends.
+      </p>
+    </div>
+
+    <button className="hidden rounded-xl border border-purple-500/30 bg-white/5 px-5 py-3 text-white transition hover:border-purple-400 hover:bg-purple-500/10 md:block">
+      View All →
+    </button>
+  </div>
+
+  <MovieGrid>
+    {movies.map((movie) => (
+      <MovieCard
+        key={movie.id}
+        movie={movie}
+      />
+    ))}
+  </MovieGrid>
+</section>
     </div>
   );
 }
