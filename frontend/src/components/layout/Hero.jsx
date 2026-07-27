@@ -6,7 +6,7 @@ export default function Hero({ featuredMovie }) {
   if (!featuredMovie) return null;
 
   return (
-    <section className="relative overflow-hidden bg-zinc-950 pt-12 lg:pt-16">
+    <section className="relative overflow-hidden pt-12 lg:pt-16">
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-24 left-40 h-[500px] w-[500px] rounded-full bg-purple-700/20 blur-[180px]" />

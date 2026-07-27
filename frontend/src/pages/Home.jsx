@@ -5,6 +5,7 @@ import Hero from "../components/layout/Hero";
 import MovieCard from "../components/MovieCard";
 import MovieGrid from "../components/MovieGrid";
 
+
 export default function Home() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +51,7 @@ export default function Home() {
     <div className="bg-zinc-950 min-h-screen">
       <Hero featuredMovie={movies[0]} />
 
-      <section className="max-w-7xl mx-auto px-6 pt-24 pb-16">
+      <section className="max-w-[1600px] mx-auto px-8 pt-24 pb-16">
   <div className="mb-12 flex items-end justify-between">
     <div>
       <span className="inline-flex items-center rounded-full border border-purple-500/30 bg-purple-500/10 px-4 py-1 text-sm text-purple-300">
