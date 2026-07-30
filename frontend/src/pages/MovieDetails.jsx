@@ -28,14 +28,43 @@ export default function MovieDetails() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
-        <h2 className="animate-pulse text-2xl text-white">
-          Loading movie...
-        </h2>
+  return (
+    <div className="min-h-screen bg-zinc-950 animate-pulse">
+      {/* Backdrop */}
+      <div className="h-[65vh] bg-zinc-900" />
+
+      <div className="mx-auto -mt-40 max-w-7xl px-6">
+        <div className="flex flex-col gap-8 md:flex-row">
+          {/* Poster */}
+          <div className="h-[450px] w-[300px] rounded-2xl bg-zinc-800" />
+
+          {/* Content */}
+          <div className="flex-1 space-y-6 pt-10">
+            <div className="h-12 w-3/4 rounded bg-zinc-800" />
+
+            <div className="flex gap-4">
+              <div className="h-6 w-20 rounded bg-zinc-800" />
+              <div className="h-6 w-20 rounded bg-zinc-800" />
+              <div className="h-6 w-28 rounded bg-zinc-800" />
+            </div>
+
+            <div className="space-y-3">
+              <div className="h-4 w-full rounded bg-zinc-800" />
+              <div className="h-4 w-11/12 rounded bg-zinc-800" />
+              <div className="h-4 w-10/12 rounded bg-zinc-800" />
+              <div className="h-4 w-8/12 rounded bg-zinc-800" />
+            </div>
+
+            <div className="flex gap-4 pt-6">
+              <div className="h-12 w-40 rounded-xl bg-zinc-800" />
+              <div className="h-12 w-40 rounded-xl bg-zinc-800" />
+            </div>
+          </div>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (error) {
     return (
