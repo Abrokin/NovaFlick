@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 
 import { getMovieDetails } from "../services/api";
 import MovieHero from "../components/movie/MovieHero";
+import MovieInfo from "../components/movie/MovieInfo";
+import CastSection from "../components/movie/CastSection";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -75,10 +77,12 @@ export default function MovieDetails() {
       </div>
     );
   }
-
+  
   return (
-    <div className="bg-zinc-950">
-      <MovieHero movie={movie} />
-    </div>
-  );
+  <div className="bg-zinc-950">
+  <MovieHero movie={movie} />
+  <MovieInfo movie={movie} />
+  <CastSection movieId={movie.id} />
+</div>
+);
 }

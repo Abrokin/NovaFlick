@@ -15,5 +15,9 @@ export const getMovieDetails = async (id) => {
   const response = await api.get(`/movies/${id}`);
   return response.data;
 };
+export async function getMovieCredits(movieId) {
+  const response = await api.get(`/movies/${movieId}/credits`);
+  return response.data;
+}
 
 export default api;
