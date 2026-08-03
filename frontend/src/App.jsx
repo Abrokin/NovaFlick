@@ -9,6 +9,7 @@ import Recommendations from "./pages/Recommendations";
 import MovieDetails from "./pages/MovieDetails";
 import Profile from "./pages/Profile";
 import Navbar from "./components/layout/Navbar";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/recommendations" element={<Recommendations />} />
                 <Route path="/movie/:id" element={<MovieDetails />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/search" element={<SearchResults />} />
             </Routes>
         </BrowserRouter>
     );

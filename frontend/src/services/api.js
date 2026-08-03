@@ -19,5 +19,16 @@ export async function getMovieCredits(movieId) {
   const response = await api.get(`/movies/${movieId}/credits`);
   return response.data;
 }
+// Search Movies
+export const searchMovies = async (query, page = 1) => {
+  const response = await api.get("/movies/search", {
+    params: {
+      query,
+      page,
+    },
+  });
+
+  return response.data;
+};
 
 export default api;

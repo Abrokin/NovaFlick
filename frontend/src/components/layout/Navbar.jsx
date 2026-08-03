@@ -1,7 +1,36 @@
-import { NavLink } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
 
+import { searchMovies } from "../../services/api";
+
 export default function Navbar() {
+  const navigate = useNavigate();
+const [query, setQuery] = useState("");
+const [results, setResults] = useState([]);
+const [showDropdown, setShowDropdown] = useState(false);
+
+const searchRef = useRef(null);
+useEffect(() => {
+  if (!query.trim()) {
+    setResults([]);
+    setShowDropdown(false);
+    return;
+  }
+
+  const timer = setTimeout(async () => {
+    try {
+      const data = await searchMovies(query);
+
+      setResults(data.results.slice(0, 5));
+      setShowDropdown(true);
+    } catch (error) {
+      console.error(error);
+    }
+  }, 300);
+
+  return () => clearTimeout(timer);
+}, [query]);
   const navLinkClass = ({ isActive }) =>
   `px-5 py-2.5 rounded-xl transition-all duration-300 ${
     isActive
@@ -64,15 +93,81 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
 
               {/* Search */}
-              <div className="hidden md:flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-72">
+              <div
+  ref={searchRef}
+  className="relative hidden md:flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-4 py-2 w-72"
+  
+>
 
                 <FaSearch className="text-gray-400" />
 
                 <input
-                  type="text"
-                  placeholder="Search movies..."
-                  className="bg-transparent outline-none text-sm text-white placeholder:text-gray-500 flex-1"
-                />
+  type="text"
+  placeholder="Search movies..."
+  value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" && query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setShowDropdown(false);
+    }
+  }}
+  className="bg-transparent outline-none text-sm text-white placeholder:text-gray-500 flex-1"
+  
+/>
+{showDropdown && (
+  <div className="absolute left-0 top-full mt-3 w-full overflow-hidden rounded-2xl border border-white/10 bg-[#12101F] shadow-2xl shadow-purple-950/30">
+    {results.length > 0 ? (
+      <>
+        {results.map((movie) => (
+          <button
+            key={movie.id}
+            onClick={() => {
+              navigate(`/movie/${movie.id}`);
+              setQuery("");
+              setShowDropdown(false);
+            }}
+            className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-white/5"
+          >
+            <img
+              src={
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w92${movie.poster_path}`
+                  : "https://placehold.co/92x138?text=No+Image"
+              }
+              alt={movie.title}
+              className="h-16 w-11 rounded-md object-cover"
+            />
+
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-white">
+                {movie.title}
+              </h3>
+
+              <p className="text-xs text-gray-400">
+                {movie.release_date?.slice(0, 4) || "Unknown"}
+              </p>
+            </div>
+          </button>
+        ))}
+
+        <button
+          onClick={() => {
+            navigate(`/search?q=${encodeURIComponent(query)}`);
+            setShowDropdown(false);
+          }}
+          className="w-full border-t border-white/10 px-4 py-3 text-center text-sm font-medium text-purple-300 transition-colors hover:bg-white/5"
+        >
+          View all results →
+        </button>
+      </>
+    ) : (
+      <div className="px-4 py-6 text-center text-sm text-gray-400">
+        No movies found.
+      </div>
+    )}
+  </div>
+)}
 
               </div>
 
