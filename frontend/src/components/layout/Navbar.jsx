@@ -9,20 +9,42 @@ export default function Navbar() {
 const [query, setQuery] = useState("");
 const [results, setResults] = useState([]);
 const [showDropdown, setShowDropdown] = useState(false);
+const [selectedIndex, setSelectedIndex] = useState(-1);
 
 const searchRef = useRef(null);
+
 useEffect(() => {
-  if (!query.trim()) {
+  function handleClickOutside(event) {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(event.target)
+    ) {
+      setShowDropdown(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+  };
+}, []);
+useEffect(() => {
+  if (query.trim().length < 2) {
     setResults([]);
     setShowDropdown(false);
     return;
   }
-
-  const timer = setTimeout(async () => {
+  
+ const timer = setTimeout(async () => {
     try {
       const data = await searchMovies(query);
 
-      setResults(data.results.slice(0, 5));
+      setResults((data.results || []).slice(0, 5));
+      setSelectedIndex(0);
       setShowDropdown(true);
     } catch (error) {
       console.error(error);
@@ -106,20 +128,61 @@ useEffect(() => {
   placeholder="Search movies..."
   value={query}
   onChange={(e) => setQuery(e.target.value)}
+  onFocus={() => {
+  if (results.length > 0 && query.trim().length >= 2) {
+    setShowDropdown(true);
+  }
+}}
   onKeyDown={(e) => {
+  if (!showDropdown) {
     if (e.key === "Enter" && query.trim()) {
       navigate(`/search?q=${encodeURIComponent(query)}`);
       setShowDropdown(false);
     }
-  }}
+    return;
+  }
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    setSelectedIndex((prev) =>
+      prev < results.length - 1 ? prev + 1 : 0
+    );
+  }
+
+  if (e.key === "ArrowUp") {
+    e.preventDefault();
+    setSelectedIndex((prev) =>
+      prev > 0 ? prev - 1 : results.length - 1
+    );
+  }
+
+  if (e.key === "Escape") {
+    setShowDropdown(false);
+    setSelectedIndex(-1);
+  }
+
+  if (e.key === "Enter") {
+    e.preventDefault();
+
+    if (selectedIndex >= 0) {
+      navigate(`/movie/${results[selectedIndex].id}`);
+      setQuery("");
+      setShowDropdown(false);
+      setSelectedIndex(-1);
+    } else if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setShowDropdown(false);
+    }
+  }
+}}
   className="bg-transparent outline-none text-sm text-white placeholder:text-gray-500 flex-1"
   
 />
-{showDropdown && (
+{showDropdown && query.trim().length >= 2 && (
   <div className="absolute left-0 top-full mt-3 w-full overflow-hidden rounded-2xl border border-white/10 bg-[#12101F] shadow-2xl shadow-purple-950/30">
     {results.length > 0 ? (
       <>
-        {results.map((movie) => (
+        {results.map((movie, index) => (
           <button
             key={movie.id}
             onClick={() => {
@@ -127,7 +190,11 @@ useEffect(() => {
               setQuery("");
               setShowDropdown(false);
             }}
-            className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-white/5"
+           className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
+  selectedIndex === index
+    ? "bg-purple-600/20"
+    : "hover:bg-white/5"
+}`}
           >
             <img
               src={
