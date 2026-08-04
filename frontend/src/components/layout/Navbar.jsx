@@ -44,7 +44,7 @@ useEffect(() => {
       const data = await searchMovies(query);
 
       setResults((data.results || []).slice(0, 5));
-      setSelectedIndex(0);
+      setSelectedIndex(-1);
       setShowDropdown(true);
     } catch (error) {
       console.error(error);
@@ -135,10 +135,21 @@ useEffect(() => {
 }}
   onKeyDown={(e) => {
   if (!showDropdown) {
-    if (e.key === "Enter" && query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query)}`);
-      setShowDropdown(false);
-    }
+    if (e.key === "Enter") {
+  e.preventDefault();
+
+  if (selectedIndex >= 0) {
+    navigate(`/movie/${results[selectedIndex].id}`);
+  } else if (query.trim()) {
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+  }
+
+  // Always clean up
+  setShowDropdown(false);
+  setSelectedIndex(-1);
+  setResults([]);
+  setQuery("");
+}
     return;
   }
 
