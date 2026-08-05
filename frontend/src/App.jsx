@@ -10,6 +10,7 @@ import MovieDetails from "./pages/MovieDetails";
 import Profile from "./pages/Profile";
 import Navbar from "./components/layout/Navbar";
 import SearchResults from "./pages/SearchResults";
+import Discover from "./pages/Discover";
 
 function App() {
     return (
@@ -26,6 +27,10 @@ function App() {
                 <Route path="/movie/:id" element={<MovieDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route
+  path="/discover"
+  element={<Discover />}
+/>
             </Routes>
         </BrowserRouter>
     );
