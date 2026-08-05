@@ -12,6 +12,12 @@ const [showDropdown, setShowDropdown] = useState(false);
 const [selectedIndex, setSelectedIndex] = useState(-1);
 
 const searchRef = useRef(null);
+const clearSearch = () => {
+  setQuery("");
+  setResults([]);
+  setShowDropdown(false);
+  setSelectedIndex(-1);
+};
 
 useEffect(() => {
   function handleClickOutside(event) {
@@ -173,18 +179,18 @@ useEffect(() => {
   }
 
   if (e.key === "Enter") {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (selectedIndex >= 0) {
-      navigate(`/movie/${results[selectedIndex].id}`);
-      setQuery("");
-      setShowDropdown(false);
-      setSelectedIndex(-1);
-    } else if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query)}`);
-      setShowDropdown(false);
-    }
+  if (selectedIndex >= 0) {
+    clearSearch();
+    navigate(`/movie/${results[selectedIndex].id}`);
+  } else if (query.trim()) {
+    clearSearch();
+    navigate(`/search?q=${encodeURIComponent(query)}`);
   }
+
+  return;
+}
 }}
   className="bg-transparent outline-none text-sm text-white placeholder:text-gray-500 flex-1"
   
@@ -197,10 +203,9 @@ useEffect(() => {
           <button
             key={movie.id}
             onClick={() => {
-              navigate(`/movie/${movie.id}`);
-              setQuery("");
-              setShowDropdown(false);
-            }}
+  clearSearch();
+  navigate(`/movie/${movie.id}`);
+}}
            className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
   selectedIndex === index
     ? "bg-purple-600/20"
@@ -231,9 +236,9 @@ useEffect(() => {
 
         <button
           onClick={() => {
-            navigate(`/search?q=${encodeURIComponent(query)}`);
-            setShowDropdown(false);
-          }}
+  clearSearch();
+  navigate(`/search?q=${encodeURIComponent(query)}`);
+}}
           className="w-full border-t border-white/10 px-4 py-3 text-center text-sm font-medium text-purple-300 transition-colors hover:bg-white/5"
         >
           View all results →
