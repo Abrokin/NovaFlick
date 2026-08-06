@@ -30,6 +30,10 @@ export const searchMovies = async (query, page = 1) => {
 
   return response.data;
 };
+export async function getGenres() {
+  const { data } = await api.get("/movies/genres");
+  return data;
+}
 export async function discoverMovies(params = {}) {
   const { data } = await api.get("/movies/discover", {
     params,
