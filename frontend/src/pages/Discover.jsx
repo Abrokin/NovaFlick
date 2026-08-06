@@ -5,6 +5,7 @@ import { discoverMovies, getGenres } from "../services/api";
 import MovieGrid from "../components/MovieGrid";
 import MovieCard from "../components/MovieCard";
 
+
 export default function Discover() {
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
