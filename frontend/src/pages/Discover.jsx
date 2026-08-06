@@ -68,6 +68,18 @@ export default function Discover() {
       behavior: "smooth",
     });
   }, [page]);
+  const getPageNumbers = () => {
+  const pages = [];
+
+  const start = Math.max(1, page - 2);
+  const end = Math.min(totalPages, page + 2);
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+
+  return pages;
+};
 
   return (
     <main className="mx-auto max-w-[1600px] px-8 py-10">
@@ -117,36 +129,98 @@ export default function Discover() {
           </MovieGrid>
 
           {/* Pagination */}
-          <div className="mt-14 flex w-full justify-center">
-            <div className="flex items-center gap-10 rounded-2xl border border-gray-800 bg-gray-900/70 px-8 py-4">
-              <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="rounded-xl bg-gray-800 px-6 py-3 text-white transition-all duration-200 hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                ← Previous
-              </button>
+<div className="mt-14 flex justify-center">
+  <div className="flex items-center gap-3 rounded-2xl border border-gray-800 bg-gray-900/70 px-6 py-4">
 
-              <div className="min-w-[170px] text-center">
-                <p className="text-sm text-gray-400">Page</p>
-                <p className="text-lg font-semibold text-white">
-                  {page}
-                  <span className="mx-2 text-gray-500">/</span>
-                  {totalPages}
-                </p>
-              </div>
+    {/* Previous */}
+    <button
+  onClick={() => setPage((p) => Math.max(1, p - 1))}
+  disabled={page === 1}
+  className="flex h-12 w-12 items-center justify-center rounded-xl border border-gray-700 bg-gray-800 text-white transition-all duration-200 hover:scale-105 hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2.5}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 19l-7-7 7-7"
+    />
+  </svg>
+</button>
 
-              <button
-                onClick={() =>
-                  setPage((p) => Math.min(totalPages, p + 1))
-                }
-                disabled={page === totalPages}
-                className="rounded-xl bg-purple-600 px-6 py-3 text-white transition-all duration-200 hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Next →
-              </button>
-            </div>
-          </div>
+    {/* First page */}
+    {page > 3 && (
+      <>
+        <button
+          onClick={() => setPage(1)}
+          className="h-10 w-10 rounded-lg text-gray-300 transition hover:bg-gray-800 hover:text-white"
+        >
+          1
+        </button>
+
+        {page > 4 && (
+          <span className="px-1 text-gray-500">...</span>
+        )}
+      </>
+    )}
+
+    {/* Current page range */}
+    {getPageNumbers().map((number) => (
+      <button
+        key={number}
+        onClick={() => setPage(number)}
+        className={`h-10 w-10 rounded-lg font-medium transition ${
+          page === number
+            ? "bg-purple-600 text-white"
+            : "text-gray-300 hover:bg-gray-800 hover:text-white"
+        }`}
+      >
+        {number}
+      </button>
+    ))}
+
+    {/* Last page */}
+    {page < totalPages - 2 && (
+      <>
+        {page < totalPages - 3 && (
+          <span className="px-1 text-gray-500">...</span>
+        )}
+
+        <button
+          onClick={() => setPage(totalPages)}
+          className="h-10 w-10 rounded-lg text-gray-300 transition hover:bg-gray-800 hover:text-white"
+        >
+          {totalPages}
+        </button>
+      </>
+    )}
+
+    {/* Next */}
+    <button
+  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+  disabled={page === totalPages}
+  className="flex h-12 w-12 items-center justify-center rounded-xl border border-purple-500 bg-purple-600 text-white shadow-lg shadow-purple-600/20 transition-all duration-200 hover:scale-105 hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-40"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2.5}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+  </svg>
+</button>
+
+  </div>
+</div>
         </>
       )}
     </main>
