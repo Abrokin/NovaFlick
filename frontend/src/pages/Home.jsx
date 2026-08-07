@@ -49,6 +49,7 @@ export default function Home() {
     <div className="min-h-screen bg-zinc-950">
       {/* Hero */}
       <Hero featuredMovie={movies[0]} />
+      <Hero />
 
       {/* Trending Section */}
       <section className="mx-auto max-w-[1600px] px-8 pt-24 pb-16">

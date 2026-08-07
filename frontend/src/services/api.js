@@ -41,5 +41,23 @@ export async function discoverMovies(params = {}) {
 
   return data;
 }
+export const getAIPicks = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return {
+      results: [],
+      reason: "Sign in to get personalized AI recommendations",
+    };
+  }
+
+  const response = await api.get("/recommendations", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};
 
 export default api;

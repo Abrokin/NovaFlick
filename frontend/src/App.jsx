@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import Navbar from "./components/layout/Navbar";
 import SearchResults from "./pages/SearchResults";
 import Discover from "./pages/Discover";
+import AIPicks from "./pages/AIPicks";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/movie/:id" element={<MovieDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/ai-picks" element={<AIPicks />} />
                 <Route
   path="/discover"
   element={<Discover />}

@@ -111,9 +111,9 @@ useEffect(() => {
                 Watchlist
               </NavLink>
 
-              <NavLink to="/recommendations" className={navLinkClass}>
-                AI Picks
-              </NavLink>
+              <NavLink to="/ai-picks" className={navLinkClass}>
+  AI Picks
+</NavLink>
 
             </div>
 
